@@ -10,8 +10,10 @@ MAXDIGITS = 3 + DECIMALPLACES
 class Market(models.Model):
 	#markets contain multiple options
 	name = models.TextField()
+	desc = models.TextField()
 	rules = models.TextField()
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	curated = models.BooleanField(default=False)
 	creationdate = models.DateTimeField()
 
 	def save(self, *args, **kwargs):

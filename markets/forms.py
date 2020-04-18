@@ -7,7 +7,7 @@ from .models import Market, Option, BuyOrder, SellOrder
 class createMarketForm(forms.ModelForm):
 	class Meta:
 		model = Market
-		fields = ['name', 'rules']
+		fields = ['name', 'desc', 'rules']
 
 class createOptionForm(forms.ModelForm):
 	class Meta:

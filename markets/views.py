@@ -89,6 +89,7 @@ def createMarketView(request):
 		if form.is_valid():
 			newmarket = Market()
 			newmarket.name = form.cleaned_data['name']
+			newmarket.desc = form.cleaned_data['desc']
 			newmarket.rules = form.cleaned_data['rules']
 			newmarket.owner = request.user
 			newmarket.save()
@@ -148,6 +149,7 @@ def editMarketView(request, marketid):
 		form = createMarketForm(request.POST)
 		if form.is_valid():
 			market.name = form.cleaned_data['name']
+			market.desc = form.cleaned_data['desc']
 			market.rules = form.cleaned_data['rules']
 			market.save()
 		return HttpResponseRedirect(reverse('markets:market-detail', args=[marketid]))

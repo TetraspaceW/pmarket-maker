@@ -1,1 +1,1 @@
-web: gunicorn market-maker.wsgi --log-file -
+web: gunicorn markets.wsgi --log-file -

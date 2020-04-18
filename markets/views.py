@@ -126,10 +126,10 @@ def signUp(request):
 	if request.method == "POST":
 		form = customUserCreationForm(request.POST)
 		if form.is_valid():
-			form.save()
 			username = form.cleaned_data['username']
 			raw_password = form.cleaned_data['password1']
-			email = form.cleaned_data['email']
+			#email = form.cleaned_data['email']
+			form.save()
 			user = authenticate(username=username, email=email, password=raw_password)
 			login(request, user)
 			return HttpResponseRedirect(reverse('markets:index'))

@@ -26,7 +26,8 @@
   <input type="submit" value="login" />
   <input type="hidden" name="next" value="{{ next }}" />
 </form>
-<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+{% if False %} <p><a href="{% url 'password_reset' %}">Lost password?</a></p> {% endif %}
 
 <p><a href="{% url 'markets:sign-up' %}">Create new account</a></p>
   

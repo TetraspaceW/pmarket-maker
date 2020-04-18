@@ -3,12 +3,11 @@ import datetime
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse,reverse_lazy
 
 from .models import Market, Option, BuyOrder, SellOrder, Portfolio
-from .forms import createMarketForm, createOptionForm, buyOfferForm, sellOfferForm, resolveOptionForm
+from .forms import createMarketForm, createOptionForm, buyOfferForm, sellOfferForm, resolveOptionForm, customUserCreationForm
 
 # Create your views here.
 def index(request):
@@ -123,14 +122,15 @@ def createOptionView(request, marketid):
 	return render(request, 'markets/option_create.html', context)
 
 def signUp(request):
-	form = UserCreationForm()
+	form = customUserCreationForm()
 	if request.method == "POST":
-		form = UserCreationForm(request.POST)
+		form = customUserCreationForm(request.POST)
 		if form.is_valid():
 			form.save()
 			username = form.cleaned_data['username']
 			raw_password = form.cleaned_data['password1']
-			user = authenticate(username=username, password=raw_password)
+			email = form.cleaned_data['email']
+			user = authenticate(username=username, email=email, password=raw_password)
 			login(request, user)
 			return HttpResponseRedirect(reverse('markets:index'))
 

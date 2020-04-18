@@ -56,3 +56,11 @@ class sellOfferForm(forms.ModelForm):
 	class Meta:
 		model = SellOrder
 		fields = ['minPrice','maxNumber']
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
+class customUserCreationForm(UserCreationForm):
+	class Meta(UserCreationForm.Meta):
+		model = User
+		fields = UserCreationForm.Meta.fields# + ('email',)

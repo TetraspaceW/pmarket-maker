@@ -27,26 +27,37 @@ Your balance in this market is ¤{{portfolio.balance}}.
 <p>
 Possible outcomes:
 </p>
-<ul>
-	{% for option in market.option_set.all|dictsort:"closed" %}
-	<li>
-		{{option.name}}
+
+<table class="table">
+	<thead>
+		<th scope="col">Option</th>
+		<th scope="col">Last Price</th>
+		{% if user.is_authenticated %}<th scope="col">Trade</th>{% endif %}
+		{% if user == market.owner %}<th scope="col">Edit</th>{% endif %}
+	</thead>
+	<tbody>
+		{% for option in market.option_set.all|dictsort:"closed" %} <tr>
+		<td>{{option.name}}</td>
 
 		{% if option.closed %}
-			- Closed at ¤{{option.resolveprice}}
+		<td>¤{{option.resolveprice}}</td>
+		{% if user.is_authenticated %}<td>CLOSED</td>{% endif %}
 		{% else %}
-			{% if user.is_authenticated %} - <a href="{% url 'markets:option-detail' option.id %}">Trade</a>
-			{% endif %} - Latest price is ¤{{option.mostRecentPrice}}
+		<td>¤{{option.mostRecentPrice}}</td>
+		{% if user.is_authenticated %}<td><a href="{% url 'markets:option-detail' option.id %}">Trade</a></td>{% endif %}
 		{% endif %}
-		{% if user == market.owner %} - <a href="{% url 'markets:option-edit' option.id %}">Edit</a>
-		{% endif %}
-	</li>
-	{% endfor %}
 
-	{% if user == market.owner %} <li>
-		 <a href="{% url 'markets:option-create' market.id %}">Add new option</a> 
-	</li> {% endif %}
-</ul>
+		{% if user == market.owner %}
+		<td><a href="{% url 'markets:option-edit' option.id %}">Edit</a></td>
+		{% endif %}
+
+		</tr> {% endfor %}
+
+		{% if user == market.owner %}
+		<tr><td colspan="4"><a href="{% url 'markets:option-create' market.id %}">Add new option</a> </td></tr>
+		{% endif %}
+	</tbody>
+</table>
 
 <h2> Leaderboard </h2>
 <ol>

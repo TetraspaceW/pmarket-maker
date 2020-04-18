@@ -23,13 +23,4 @@
 		{% endfor %}
 	</tbody>
 </table>
-
-<ul>
-	{% for market in market_list|dictsortreversed:"creationdate"%}
-	<li>
-		<a href="{% url 'markets:market-detail' market.id %}">{{market.name}}</a>
-	</li>
-	{% endfor %}
-</ul>
-
 {% endblock %}

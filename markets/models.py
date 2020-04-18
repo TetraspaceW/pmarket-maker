@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 import datetime
 
 DECIMALPLACES = 3
@@ -11,6 +12,11 @@ class Market(models.Model):
 	name = models.TextField()
 	rules = models.TextField()
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
+	creationdate = models.DateTimeField()
+
+	def save(self, *args, **kwargs):
+		self.creationdate = timezone.now()
+		super().save(*args,**kwargs)
 
 	def __str__(self):
 		return self.name
@@ -21,9 +27,6 @@ class Option(models.Model):
 	market = models.ForeignKey(Market, on_delete=models.CASCADE)
 	closed = models.BooleanField(default=False)
 	resolveprice =  models.DecimalField(default=0, max_digits=MAXDIGITS, decimal_places=DECIMALPLACES)
-
-	class Meta:
-		ordering = ['name']
 
 	def __str__(self):
 		return self.name
@@ -70,6 +73,7 @@ class BuyOrder(models.Model):
 		ordering = ['-maxPrice','-creationdate']
 
 	def save(self,*args,**kwargs):
+		self.creationdate = timezone.now()
 		makeNewPortfolioIfNonexistent(self.creator,self.option.market)
 		super().save(*args,**kwargs)
 
@@ -88,6 +92,7 @@ class SellOrder(models.Model):
 		ordering = ['minPrice','-creationdate']
 
 	def save(self,*args,**kwargs):
+		self.creationdate = timezone.now()
 		makeNewPortfolioIfNonexistent(self.creator,self.option.market)
 		super().save(*args,**kwargs)
 
@@ -105,6 +110,7 @@ class Transaction(models.Model):
 		ordering = ['-creationdate']
 
 	def save(self,*args,**kwargs):
+		self.creationdate = timezone.now()
 		super().save(*args,**kwargs)
 
 class Portfolio(models.Model):
@@ -126,6 +132,5 @@ def makeNewPortfolioIfNonexistent(newUser,newMarket):
 		newPortfolio.market = newMarket;
 		newPortfolio.balance = 1000;
 		newPortfolio.save();
-
 
 from . import signals

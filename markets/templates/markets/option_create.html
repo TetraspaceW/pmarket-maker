@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>Create New Option</title>
+{% endblock %}
+
+{% block content %}
+<h1>Create New Option</h1>
+
+<p>
+Creating a new option in the {{market.name}} market.
+</p>
+
+<form action="" method="post">
+	{% csrf_token %}
+	<table>
+	{{ form.as_table }}
+	</table>
+	<input type="submit" value="Create">
+</form>
+
+{% endblock %}

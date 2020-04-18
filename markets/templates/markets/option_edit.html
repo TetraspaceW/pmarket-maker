@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>Editing {{option}}</title>
+{% endblock %}
+
+{% block content %}
+<h1>Editing {{option}}</h1>
+
+<p>
+Editing the name of the {{option.name}} option, part of the <a href="{% url 'markets:market-detail' option.market.id %}">{{option.market.name}}</a> market.
+</p>
+
+<form action="" method="post">
+	{% csrf_token %}
+	<table>
+	{{ editForm.as_table }}
+	</table>
+	<input type="submit" name="editbutton" value="Edit Option">
+</form>
+
+<br/>
+<p>Resolve the {{option.name}} option at a certain price using the below form. This will suspend trading and pay out the resolution price for each owned share.</p>
+
+<form action="" method="post">
+	{% csrf_token %}
+	<table>
+	{{ resolveForm.as_table }}
+	</table>
+	<input type="submit" name="resolvebutton" value="Resolve Option">
+</form>
+
+{% endblock %}

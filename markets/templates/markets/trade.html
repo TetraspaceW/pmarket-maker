@@ -1,0 +1,64 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>{{option.name}}</title>
+{% endblock %}
+
+{% block contextualsidebar %}
+{% if portfolio %}
+Your balance in this market is ¤{{portfolio.balance}}.
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>{{option.name}}</h1>
+
+<p>
+Trading on {{option.name}}.
+</p>
+
+{% if not option.closed %}
+
+<p>Create a Buy Order if you think that the correct price of this option is <em>above</em> your MaxPrice.</p>
+
+<form action="" method="post">
+	{% csrf_token %}
+	<table>
+	{{buyform.as_table}}
+	</table>
+	<input type="submit" name="buyofferbutton" value="Create Buy Order">
+</form>
+
+<br/>
+
+<p>Create a Sell Order if you think that the correct price of this option is <em>below</em> your MinPrice.</p>
+
+<form action="" method="post">
+	{% csrf_token %}
+	<table>
+	{{sellform.as_table}}
+	</table>
+	<input type="submit" name="sellofferbutton" value="Create Sell Order">
+</form>
+
+<p>
+Part of the "<a href="{% url 'markets:market-detail' option.market.id %}">{{option.market.name}}</a>" market.
+</p>
+
+<h2>Current Buy Orders</h2>
+<ul>
+{% for buyorder in buyorder_list %}
+<li>{{buyorder.creator}} buying {{buyorder.maxNumber}} for ¤{{buyorder.maxPrice}} </li>
+{% endfor %}
+</ul>
+
+<h2>Current Sell Orders</h2>
+<ul>
+{% for sellorder in sellorder_list %}
+<li>{{sellorder.creator}} selling {{sellorder.maxNumber}} for ¤{{sellorder.minPrice}} </li>
+{% endfor %}
+</ul>
+
+{% endif %}
+
+{% endblock %}

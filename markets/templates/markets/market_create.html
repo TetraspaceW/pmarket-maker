@@ -1,0 +1,22 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+<title>Create New Market</title>
+{% endblock %}
+
+{% block content %}
+<h1>Create New Market</h1>
+
+<p>
+Creating a new market as {{user}}.
+</p>
+
+<form action="" method="post">
+	{% csrf_token %}
+	<table>
+	{{ form.as_table }}
+	</table>
+	<input type="submit" value="Create">
+</form>
+
+{% endblock %}

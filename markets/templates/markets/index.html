@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+
+{% block title %}
+<title>Markets Index</title>
+{% endblock %}
+
+{% block content %}
+<p>
+List of Markets:
+</p>
+<ul>
+	{% for market in market_list%}
+	<li>
+		<a href="{% url 'markets:market-detail' market.id %}">{{market.name}}</a>
+	</li>
+	{% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<p>
+<a href="{% url 'markets:create-market' %}">Create a new market.</a>
+</p>
+{% endif %}
+
+{% endblock %}

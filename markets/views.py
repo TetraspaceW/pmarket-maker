@@ -130,7 +130,7 @@ def signUp(request):
 			raw_password = form.cleaned_data['password1']
 			#email = form.cleaned_data['email']
 			form.save()
-			user = authenticate(username=username, email=email, password=raw_password)
+			user = authenticate(username=username, password=raw_password)
 			login(request, user)
 			return HttpResponseRedirect(reverse('markets:index'))
 

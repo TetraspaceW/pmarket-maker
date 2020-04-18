@@ -14,7 +14,7 @@ Your balance in this market is ¤{{portfolio.balance}}.
 <h1>{{option.name}}</h1>
 
 <p>
-Trading on {{option.name}}.
+Trading on {{option.name}}, part of the "<a href="{% url 'markets:market-detail' option.market.id %}">{{option.market.name}}</a>" market.
 </p>
 
 {% if not option.closed %}

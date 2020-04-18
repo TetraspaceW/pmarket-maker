@@ -147,8 +147,10 @@ def editMarketView(request, marketid):
 	if request.method == "POST":
 		form = createMarketForm(request.POST)
 		if form.is_valid():
-			market.name = form.cleaned_date['name']
-			market.rules = form.cleaned_date['rules']
+			market.name = form.cleaned_data['name']
+			market.rules = form.cleaned_data['rules']
+			market.save()
+		return HttpResponseRedirect(reverse('markets:market-detail', args=[marketid]))
 
 
 	context = {

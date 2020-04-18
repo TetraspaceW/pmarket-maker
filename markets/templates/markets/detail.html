@@ -35,8 +35,8 @@ Possible outcomes:
 		{% if option.closed %}
 			- Closed at ¤{{option.resolveprice}}
 		{% else %}
-			{% if user.is_authenticated %} - <a href="{% url 'markets:option-detail' option.id %}">Trade</a> - Latest price is 	¤{{option.mostRecentPrice}}
-			{% endif %}
+			{% if user.is_authenticated %} - <a href="{% url 'markets:option-detail' option.id %}">Trade</a>
+			{% endif %} - Latest price is ¤{{option.mostRecentPrice}}
 		{% endif %}
 		{% if user == market.owner %} - <a href="{% url 'markets:option-edit' option.id %}">Edit</a>
 		{% endif %}

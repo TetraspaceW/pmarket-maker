@@ -63,7 +63,7 @@ class Option(models.Model):
 
 #i'm really sorry about these two models by the way
 #i only realised they're literally the same thing after writing them
-#i'll migrate these guys later
+#i'll merge these guys or make them inherit from the same class or whatever later
 #TODO: making these orders should probably bind up some of your capital
 class BuyOrder(models.Model):
 	maxPrice = models.DecimalField(default=0, max_digits=MAXDIGITS, decimal_places=DECIMALPLACES)

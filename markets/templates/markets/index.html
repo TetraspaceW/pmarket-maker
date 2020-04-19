@@ -17,7 +17,7 @@
 <table class="table">
 	<tbody>
 		{% for market in market_list|dictsortreversed:"creationdate"|dictsortreversed:"curated" %}
-		{% if market.curated %}<tr class="table-primary">{%else%}<tr>{%endif%}
+		{% if market.curated %}<tr class="table-secondary">{%else%}<tr>{%endif%}
 			<td><a href="{% url 'markets:market-detail' market.id %}">{{market.name}}</a><br/>{{market.desc}}</td>
 		</tr>
 		{% endfor %}

@@ -17,7 +17,8 @@ class Market(models.Model):
 	creationdate = models.DateTimeField()
 
 	def save(self, *args, **kwargs):
-		self.creationdate = timezone.now()
+		if not self.id:
+			self.creationdate = timezone.now()
 		super().save(*args,**kwargs)
 
 	def __str__(self):
@@ -75,7 +76,8 @@ class BuyOrder(models.Model):
 		ordering = ['-maxPrice','-creationdate']
 
 	def save(self,*args,**kwargs):
-		self.creationdate = timezone.now()
+		if not self.id:
+			self.creationdate = timezone.now()
 		makeNewPortfolioIfNonexistent(self.creator,self.option.market)
 		super().save(*args,**kwargs)
 
@@ -94,7 +96,8 @@ class SellOrder(models.Model):
 		ordering = ['minPrice','-creationdate']
 
 	def save(self,*args,**kwargs):
-		self.creationdate = timezone.now()
+		if not self.id:
+			self.creationdate = timezone.now()
 		makeNewPortfolioIfNonexistent(self.creator,self.option.market)
 		super().save(*args,**kwargs)
 
@@ -112,7 +115,8 @@ class Transaction(models.Model):
 		ordering = ['-creationdate']
 
 	def save(self,*args,**kwargs):
-		self.creationdate = timezone.now()
+		if not self.id:
+			self.creationdate = timezone.now()
 		super().save(*args,**kwargs)
 
 class Portfolio(models.Model):

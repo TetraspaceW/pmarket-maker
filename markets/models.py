@@ -61,7 +61,10 @@ class Option(models.Model):
 			sellerPortfolio.balance -= float(price*trade.amount)
 			sellerPortfolio.save()
 
-
+#i'm really sorry about these two models by the way
+#i only realised they're literally the same thing after writing them
+#i'll migrate these guys later
+#TODO: making these orders should probably bind up some of your capital
 class BuyOrder(models.Model):
 	maxPrice = models.DecimalField(default=0, max_digits=MAXDIGITS, decimal_places=DECIMALPLACES)
 	maxNumber = models.IntegerField(default=0) 
@@ -127,6 +130,10 @@ class Portfolio(models.Model):
 	def addBalance(self, amount):
 		self.balance += amount;
 		self.save()
+
+	def displayNetWorth(self,amount):
+		# TODO: make this also add up your shares and stuff
+		return balance
 
 	def __str__(self):
 		return "%s's portfolio in %s" %(self.owner, self.market)

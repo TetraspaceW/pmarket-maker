@@ -6,6 +6,8 @@ import datetime
 DECIMALPLACES = 3
 MAXDIGITS = 3 + DECIMALPLACES
 
+INITIALBALANCE = 1000
+
 # Create your models here.
 class Market(models.Model):
 	#markets contain multiple options
@@ -37,7 +39,7 @@ class Option(models.Model):
 	def mostRecentPrice(self):
 		try:
 			if not self.closed:
-				return Transaction.objects.get(option=self).price
+				return Transaction.objects.filter(option=self)[0].price
 			else:
 				return self.resolveprice
 		except:
@@ -45,7 +47,17 @@ class Option(models.Model):
 
 	def delete(self,*args,**kwargs):
 		#reevaluate all the transactions involving this if an option is deleted
+		usersOwningThis = list(User.objects.filter(soldIn__option = self).union(User.objects.filter(boughtIn__option = self)))
+		marketTradedIn = self.market
+
 		super().delete(*args,**kwargs)
+
+		for user in usersOwningThis:
+			portfolios = Portfolio.objects.filter(market=marketTradedIn).filter(owner=user)
+			for p in portfolios:
+				p.balance = p.recalculateBalance()
+				p.save()
+		
 
 	def resolve(self,price):
 		self.resolveprice = price;
@@ -134,15 +146,43 @@ class Portfolio(models.Model):
 		self.balance += amount;
 		self.save()
 
+	def recalculateBalance(self):
+		#recalculates balance from transaction and option resolution history
+		transactionsInMarket = Transaction.objects.filter(option__market=self.market)
+		purchasesInMarket = transactionsInMarket.filter(buyer=self.owner)
+		salesInMarket = transactionsInMarket.filter(seller=self.owner)
+
+		resolvedOptionsInMarket = Option.objects.filter(market=self.market).filter(closed=True)
+
+		bal = INITIALBALANCE
+		for transaction in salesInMarket:
+			bal += float(transaction.amount * transaction.price)
+		for transaction in purchasesInMarket:
+			bal -= float(transaction.amount * transaction.price)
+
+		for option in resolvedOptionsInMarket:
+			optionPurchases = purchasesInMarket.filter(option=option)
+			optionSales = salesInMarket.filter(option=option)
+			for transaction in optionPurchases:
+				bal += float(option.resolveprice * transaction.amount)
+			for transaction in optionSales:
+				bal -= float(option.resolveprice * transaction.amount)
+
+		return bal
+
+
+
 	def displayNetWorth(self):
 		networth = self.balance
+
+		# add expected value of options that have not yet paid out
 		transactionsInMarket = Transaction.objects.filter(option__market=self.market)
 		for transaction in transactionsInMarket.filter(seller=self.owner):
-			if transaction.option.mostRecentPrice():
+			if transaction.option.mostRecentPrice() and not transaction.option.closed:
 				networth -= float(transaction.amount * transaction.option.mostRecentPrice())
 
 		for transaction in transactionsInMarket.filter(buyer=self.owner):
-			if transaction.option.mostRecentPrice():
+			if transaction.option.mostRecentPrice() and not transaction.option.closed:
 				networth += float(transaction.amount * transaction.option.mostRecentPrice())
 
 		return networth
@@ -155,7 +195,7 @@ def makeNewPortfolioIfNonexistent(newUser,newMarket):
 		newPortfolio = Portfolio()
 		newPortfolio.owner = newUser;
 		newPortfolio.market = newMarket;
-		newPortfolio.balance = 1000;
+		newPortfolio.balance = INITIALBALANCE;
 		newPortfolio.save();
 
 from . import signals

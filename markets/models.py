@@ -138,10 +138,12 @@ class Portfolio(models.Model):
 		networth = self.balance
 		transactionsInMarket = Transaction.objects.filter(option__market=self.market)
 		for transaction in transactionsInMarket.filter(seller=self.owner):
-			networth -= float(transaction.amount * transaction.option.mostRecentPrice())
+			if transaction.option.mostRecentPrice():
+				networth -= float(transaction.amount * transaction.option.mostRecentPrice())
 
 		for transaction in transactionsInMarket.filter(buyer=self.owner):
-			networth += float(transaction.amount * transaction.option.mostRecentPrice())
+			if transaction.option.mostRecentPrice():
+				networth += float(transaction.amount * transaction.option.mostRecentPrice())
 
 		return networth
 

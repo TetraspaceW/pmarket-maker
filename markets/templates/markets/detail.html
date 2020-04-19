@@ -44,17 +44,17 @@ Possible outcomes:
 		{% if user.is_authenticated %}<td>CLOSED</td>{% endif %}
 		{% else %}
 		<td>¤{{option.mostRecentPrice}}</td>
-		{% if user.is_authenticated %}<td><a href="{% url 'markets:option-detail' option.id %}">Trade</a></td>{% endif %}
+		{% if user.is_authenticated %}<td><a href="{% url 'markets:option-detail' option.id %}"><div>Trade</div></a></td>{% endif %}
 		{% endif %}
 
 		{% if user == market.owner %}
-		<td><a href="{% url 'markets:option-edit' option.id %}">Edit</a></td>
+		<td><a href="{% url 'markets:option-edit' option.id %}"><div>Edit</div></a></td>
 		{% endif %}
 
 		</tr> {% endfor %}
 
 		{% if user == market.owner %}
-		<tr><td colspan="4"><a href="{% url 'markets:option-create' market.id %}">Add new option</a> </td></tr>
+		<tr><td colspan="4"><a href="{% url 'markets:option-create' market.id %}"><div>Add new option</div></a> </td></tr>
 		{% endif %}
 	</tbody>
 </table>

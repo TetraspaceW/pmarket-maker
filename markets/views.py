@@ -143,7 +143,7 @@ def signUp(request):
 
 def editMarketView(request, marketid):
 	market = get_object_or_404(Market, pk=marketid)
-	form = createMarketForm(initial={'name':market.name, 'rules':market.rules})
+	form = createMarketForm(initial={'name':market.name, 'rules':market.rules, 'desc':market.desc})
 
 	if request.method == "POST":
 		form = createMarketForm(request.POST)

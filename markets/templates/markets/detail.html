@@ -39,13 +39,13 @@ Possible outcomes:
 		{% for option in market.option_set.all|dictsort:"name"|dictsort:"closed" %} <tr>
 		<td>{{option.name}}</td>
 
-		{% if option.closed %}
-		<td>¤{{option.resolveprice}}</td>
-		{% if user.is_authenticated %}<td>CLOSED</td>{% endif %}
-		{% else %}
 		<td>¤{{option.mostRecentPrice}}</td>
-		{% if user.is_authenticated %}<td><a href="{% url 'markets:option-detail' option.id %}"><div>Trade</div></a></td>{% endif %}
-		{% endif %}
+
+		{% if user.is_authenticated %} {% if option.closed %}
+		<td>CLOSED</td>
+		{% else %}
+		<td><a href="{% url 'markets:option-detail' option.id %}"><div>Trade</div></a></td>
+		{% endif %} {% endif %}
 
 		{% if user == market.owner %}
 		<td><a href="{% url 'markets:option-edit' option.id %}"><div>Edit</div></a></td>

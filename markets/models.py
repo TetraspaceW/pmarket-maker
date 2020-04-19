@@ -36,9 +36,12 @@ class Option(models.Model):
 
 	def mostRecentPrice(self):
 		try:
-			return Transaction.objects.filter(option=self)[0].price
+			if not self.closed:
+				return Transaction.objects.get(option=self).price
+			else:
+				return self.resolveprice
 		except:
-			return "-"
+			return None
 
 	def delete(self,*args,**kwargs):
 		#reevaluate all the transactions involving this if an option is deleted
@@ -132,8 +135,15 @@ class Portfolio(models.Model):
 		self.save()
 
 	def displayNetWorth(self):
-		# TODO: make this also add up your shares and stuff
-		return self.balance
+		networth = self.balance
+		transactionsInMarket = Transaction.objects.filter(option__market=self.market)
+		for transaction in transactionsInMarket.filter(seller=self.owner):
+			networth -= float(transaction.amount * transaction.option.mostRecentPrice())
+
+		for transaction in transactionsInMarket.filter(buyer=self.owner):
+			networth += float(transaction.amount * transaction.option.mostRecentPrice())
+
+		return networth
 
 	def __str__(self):
 		return "%s's portfolio in %s" %(self.owner, self.market)

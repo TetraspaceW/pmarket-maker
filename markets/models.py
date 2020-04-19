@@ -131,9 +131,9 @@ class Portfolio(models.Model):
 		self.balance += amount;
 		self.save()
 
-	def displayNetWorth(self,amount):
+	def displayNetWorth(self):
 		# TODO: make this also add up your shares and stuff
-		return balance
+		return self.balance
 
 	def __str__(self):
 		return "%s's portfolio in %s" %(self.owner, self.market)

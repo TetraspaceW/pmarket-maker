@@ -61,8 +61,8 @@ Possible outcomes:
 
 <h2> Leaderboard </h2>
 <ol>
-	{% for pf in market.portfolio_set.all|dictsortreversed:"balance" %}
-		<li>{% if user == pf.owner %}<b>{% endif %} {{pf.owner}} - ¤{{pf.balance}} {% if user == pf.owner %} (You)</b>{% endif %}</li>
+	{% for pf in market.portfolio_set.all|dictsortreversed:"displayNetWorth" %}
+		<li>{% if user == pf.owner %}<b>{% endif %} {{pf.owner}} - ¤{{pf.displayNetWorth}} {% if user == pf.owner %} (You)</b>{% endif %}</li>
 	{% endfor %}
 </ol>
 {% endblock %}

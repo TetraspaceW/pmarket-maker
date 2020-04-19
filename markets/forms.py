@@ -8,6 +8,9 @@ class createMarketForm(forms.ModelForm):
 	class Meta:
 		model = Market
 		fields = ['name', 'desc', 'rules']
+		labels = {
+			'desc': _('Description')
+		}
 
 class createOptionForm(forms.ModelForm):
 	class Meta:
@@ -18,6 +21,9 @@ class resolveOptionForm(forms.ModelForm):
 	class Meta:
 		model = Option
 		fields = ['resolveprice']
+		labels = {
+			'resolveprice': _('Resolution Price'),
+		}
 
 class buyOfferForm(forms.ModelForm):
 	def clean_maxPrice(self):
@@ -37,6 +43,10 @@ class buyOfferForm(forms.ModelForm):
 	class Meta:
 		model = BuyOrder
 		fields = ['maxPrice', 'maxNumber']
+		labels = {
+			'maxPrice': _('Max Price'),
+			'maxNumber': _('Max Number')
+		}
 
 class sellOfferForm(forms.ModelForm):
 	def clean_maxPrice(self):
@@ -56,6 +66,10 @@ class sellOfferForm(forms.ModelForm):
 	class Meta:
 		model = SellOrder
 		fields = ['minPrice','maxNumber']
+		labels = {
+			'minPrice': _('Min Price'),
+			'maxNumber': _('Max Number'),
+		}
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User

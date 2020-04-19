@@ -79,10 +79,11 @@ def optionView(request, optionid):
 		'sellorder_list': option.sellorder_set.all(),
 		'portfolio': portfolio
 	}
+
 	return render(request, 'markets/trade.html', context)
 
+@login_required
 def createMarketView(request):
-
 	if request.method == "POST":
 		form = createMarketForm(request.POST)
 
@@ -103,6 +104,7 @@ def createMarketView(request):
 
 	return render(request, 'markets/market_create.html', context)
 
+@login_required
 def createOptionView(request, marketid):
 	if request.method == "POST":
 		form = createOptionForm(request.POST)
@@ -115,12 +117,17 @@ def createOptionView(request, marketid):
 	else:
 		form = createOptionForm()
 
+	market = get_object_or_404(Market, pk=marketid)
+
 	context = {
 		'form': form,
-		'market': get_object_or_404(Market, pk=marketid)
+		'market': market
 	}
 
-	return render(request, 'markets/option_create.html', context)
+	if request.user == market.owner:
+		return render(request, 'markets/option_create.html', context)
+	else:
+		return HttpResponseRedirect(reverse('markets:market-detail', args=[marketid]))
 
 def signUp(request):
 	form = customUserCreationForm()
@@ -141,6 +148,7 @@ def signUp(request):
 	
 	return render(request, 'signup.html', context)
 
+@login_required
 def editMarketView(request, marketid):
 	market = get_object_or_404(Market, pk=marketid)
 	form = createMarketForm(initial={'name':market.name, 'rules':market.rules, 'desc':market.desc})
@@ -159,8 +167,13 @@ def editMarketView(request, marketid):
 		'market': market,
 		'form': form
 		}
-	return render(request, 'markets/market_edit.html', context)
 
+	if request.user == market.owner:
+		return render(request, 'markets/market_edit.html', context)
+	else:
+		return HttpResponseRedirect(reverse('markets:market-detail', args=[marketid]))
+
+@login_required
 def editOptionView(request, optionid):
 	option = get_object_or_404(Option, pk=optionid)
 	editForm = createOptionForm(initial={'name': option.name})
@@ -186,4 +199,7 @@ def editOptionView(request, optionid):
 		'option': option
 		}
 
-	return render(request, 'markets/option_edit.html', context)
+	if request.user == option.market.owner:
+		return render(request, 'markets/option_edit.html', context)
+	else:
+		return HttpResponseRedirect(reverse('markets:market-detail', args=[option.market.id]))

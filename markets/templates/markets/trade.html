@@ -48,14 +48,14 @@ Part of the "<a href="{% url 'markets:market-detail' option.market.id %}">{{opti
 <h2>Current Buy Orders</h2>
 <ul>
 {% for buyorder in buyorder_list %}
-<li>{{buyorder.creator}} buying {{buyorder.maxNumber}} for ¤{{buyorder.maxPrice}} </li>
+<li>{{buyorder.creator}} buying {{buyorder.maxNumber}} for ¤{{buyorder.maxPrice}}</li>
 {% endfor %}
 </ul>
 
 <h2>Current Sell Orders</h2>
 <ul>
 {% for sellorder in sellorder_list %}
-<li>{{sellorder.creator}} selling {{sellorder.maxNumber}} for ¤{{sellorder.minPrice}} </li>
+<li>{{sellorder.creator}} selling {{sellorder.maxNumber}} for ¤{{sellorder.minPrice}}</li>
 {% endfor %}
 </ul>
 

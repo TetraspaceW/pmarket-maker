@@ -10,5 +10,5 @@ urlpatterns = [
 	path('<int:marketid>/edit', views.editMarketView, name='market-edit'),
 	path('<int:marketid>/newoption', views.createOptionView, name='option-create'),
 	path('tradeon/<int:optionid>/edit', views.editOptionView, name='option-edit'),
-	path('sign-up', views.signUp, name='sign-up'),
+	path('sign-up', views.signUp, name='sign-up')
 ]

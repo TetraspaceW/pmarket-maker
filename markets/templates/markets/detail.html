@@ -24,9 +24,7 @@ Your balance in this market is ¤{{portfolio.balance}}.
 <p><a href="{%url 'login'%}?next={{request.path}}">Log in</a> to trade on this market.</p>
 {% endif %}
 
-<p>
-Possible outcomes:
-</p>
+{% regroup market.option_set.all|dictsort:"name"|dictsort:"closed"|dictsort:"question" by question as question_list %}
 
 <table class="table">
 	<thead>
@@ -36,26 +34,30 @@ Possible outcomes:
 		{% if user == market.owner %}<th scope="col">Edit</th>{% endif %}
 	</thead>
 	<tbody>
-		{% for option in market.option_set.all|dictsort:"name"|dictsort:"question"|dictsort:"closed" %} <tr>
-		<td>{{option.name}}</td>
-
-		<td>¤{{option.mostRecentPrice}}</td>
-
-		{% if user.is_authenticated %} {% if option.closed %}
-		<td>CLOSED</td>
-		{% else %}
-		<td><a href="{% url 'markets:option-detail' option.id %}"><div>Trade</div></a></td>
-		{% endif %} {% endif %}
-
-		{% if user == market.owner %}
-		<td><a href="{% url 'markets:option-edit' option.id %}"><div>Edit</div></a></td>
-		{% endif %}
-
-		</tr> {% endfor %}
-
 		{% if user == market.owner %}
 		<tr><td colspan="4"><a href="{% url 'markets:option-create' market.id %}"><div>Add new option</div></a> </td></tr>
 		{% endif %}
+		{% for question in question_list %} <tr>
+		<tr>{% if question.grouper %}<th colspan="4" scope="colgroup">{{ question.grouper }}</td>{% endif %}</tr>
+
+		{% for option in question.list %}
+			<td>{{option.name}}</td>
+
+			<td>¤{{option.mostRecentPrice}}</td>
+
+			{% if user.is_authenticated %} {% if option.closed %}
+			<td>CLOSED</td>
+			{% else %}
+			<td><a href="{% url 'markets:option-detail' option.id %}"><div>Trade</div></a></td>
+			{% endif %} {% endif %}
+
+			{% if user == market.owner %}
+			<td><a href="{% url 'markets:option-edit' option.id %}"><div>Edit</div></a></td>
+			{% endif %}
+
+			</tr> {% endfor %}
+
+		{% endfor %}
 	</tbody>
 </table>
 

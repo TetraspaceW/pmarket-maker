@@ -15,7 +15,11 @@ class createMarketForm(forms.ModelForm):
 class createOptionForm(forms.ModelForm):
 	class Meta:
 		model = Option
-		fields = ['name']
+		fields = ['name', 'question']
+		widgets = {
+			'name': forms.Textarea(attrs={'rows': 3}),
+			'question': forms.Textarea(attrs={'rows': 3}),
+		}
 
 class resolveOptionForm(forms.ModelForm):
 	class Meta:

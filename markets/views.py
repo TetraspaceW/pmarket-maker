@@ -111,6 +111,7 @@ def createOptionView(request, marketid):
 		if form.is_valid():
 			newoption = Option()
 			newoption.name = form.cleaned_data['name']
+			newoption.question = form.cleaned_data['question']
 			newoption.market = get_object_or_404(Market, pk=marketid)
 			newoption.save()
 			return HttpResponseRedirect(reverse('markets:market-detail', args=[marketid]))
@@ -176,7 +177,7 @@ def editMarketView(request, marketid):
 @login_required
 def editOptionView(request, optionid):
 	option = get_object_or_404(Option, pk=optionid)
-	editForm = createOptionForm(initial={'name': option.name})
+	editForm = createOptionForm(initial={'name': option.name, 'question': option.question})
 	resolveForm = resolveOptionForm()
 
 	if request.method == "POST":
@@ -184,6 +185,7 @@ def editOptionView(request, optionid):
 			editForm = createOptionForm(request.POST)
 			if editForm.is_valid():
 				option.name = editForm.cleaned_data['name']
+				option.question = editForm.cleaned_data['question']
 				option.save()
 				return HttpResponseRedirect(reverse('markets:market-detail', args=[option.market.id]))
 

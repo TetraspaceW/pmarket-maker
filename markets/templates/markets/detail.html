@@ -36,7 +36,7 @@ Possible outcomes:
 		{% if user == market.owner %}<th scope="col">Edit</th>{% endif %}
 	</thead>
 	<tbody>
-		{% for option in market.option_set.all|dictsort:"name"|dictsort:"tag"|dictsort:"closed" %} <tr>
+		{% for option in market.option_set.all|dictsort:"name"|dictsort:"question"|dictsort:"closed" %} <tr>
 		<td>{{option.name}}</td>
 
 		<td>¤{{option.mostRecentPrice}}</td>

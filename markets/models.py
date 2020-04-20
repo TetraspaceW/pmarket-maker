@@ -32,7 +32,7 @@ class Option(models.Model):
 	market = models.ForeignKey(Market, on_delete=models.CASCADE)
 	closed = models.BooleanField(default=False)
 	resolveprice =  models.DecimalField(default=0, max_digits=MAXDIGITS, decimal_places=DECIMALPLACES)
-	tag = models.SlugField(blank=True)
+	question = models.TextField(blank=True)
 
 	def __str__(self):
 		return self.name

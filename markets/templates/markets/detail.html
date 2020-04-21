@@ -24,7 +24,7 @@ Your balance in this market is ¤{{portfolio.balance}}.
 <p><a href="{%url 'login'%}?next={{request.path}}">Log in</a> to trade on this market.</p>
 {% endif %}
 
-{% regroup market.option_set.all|dictsort:"name"|dictsort:"closed"|dictsort:"question" by question as question_list %}
+{% regroup market.option_set.all|dictsort:"id"|dictsort:"closed"|dictsort:"question" by question as question_list %}
 
 <table class="table">
 	<thead>

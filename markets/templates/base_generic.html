@@ -8,7 +8,7 @@
 	{% block title %}{% endblock %}
 </head>
 
-<body>
+<body class="d-flex flex-column h-100">
 
 <div class="container-fluid">
 <div class="row">
@@ -32,6 +32,14 @@
 
 </div>
 </div>
+
+{% if False %}
+<footer class="footer">
+	<div class="container">
+	{% block footer %}PMarket Maker by <a href="https://twitter.com/TetraspaceAdmn">Diamond Grouping</a>{% endblock %}
+	</div>
+</footer>
+{% endif %}
 
 </body>
 

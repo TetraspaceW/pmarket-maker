@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load widget_tweaks %}
 
 {% block title %}
 <title>{{option.name}}</title>
@@ -23,10 +24,28 @@ Trading on {{option.name}}, part of the "<a href="{% url 'markets:market-detail'
 
 <form action="" method="post">
 	{% csrf_token %}
-	<table>
-	{{buyform.as_table}}
-	</table>
-	<input type="submit" name="buyofferbutton" value="Create Buy Order">
+	<div class="form-group row">
+	 <label for="{{ buyform.maxPrice.id_for_label }}" class="col-sm-2 col-form-label">{{ buyform.maxPrice.label }}:</label>
+	  <div class="col-sm-10">
+	   <div class="input-group mb-3">
+        <div class="input-group-prepend">
+         <span class="input-group-text">¤</span>
+        </div>
+	   {% render_field buyform.maxPrice class="form-control" %}
+	   </div>
+	  </div>
+	  {% for error in buyform.maxPrice.errors %}
+	   <span class="help-block">{{ error }}</span>
+	  {% endfor %}
+	</div>
+	<div class="form-group row">
+	 <label for="{{ buyform.maxNumber.id_for_label }}" class="col-sm-2 col-form-label">{{ buyform.maxNumber.label }}:</label>
+	  <div class="col-sm-10">{% render_field buyform.maxNumber class="form-control" %}</div>
+	  {% for error in buyform.maxNumber.errors %}
+	   <span class="help-block">{{ error }}</span>
+	  {% endfor %}
+	</div>
+	<input type="submit" class="btn btn-primary" name="buyofferbutton" value="Create Buy Order">
 </form>
 
 <br/>
@@ -35,10 +54,28 @@ Trading on {{option.name}}, part of the "<a href="{% url 'markets:market-detail'
 
 <form action="" method="post">
 	{% csrf_token %}
-	<table>
-	{{sellform.as_table}}
-	</table>
-	<input type="submit" name="sellofferbutton" value="Create Sell Order">
+	<div class="form-group row">
+	 <label for="{{ sellform.minPrice.id_for_label }}" class="col-sm-2 col-form-label">{{ sellform.minPrice.label }}:</label>
+	  <div class="col-sm-10">
+	   <div class="input-group mb-3">
+        <div class="input-group-prepend">
+         <span class="input-group-text">¤</span>
+        </div>
+	   {% render_field sellform.minPrice class="form-control" %}
+	   </div>
+	  </div>
+	  {% for error in sellform.minPrice.errors %}
+	   <span class="help-block">{{ error }}</span>
+	  {% endfor %}
+	</div>
+	<div class="form-group row">
+	 <label for="{{ sellform.maxNumber.id_for_label }}" class="col-sm-2 col-form-label">{{ sellform.maxNumber.label }}:</label>
+	  <div class="col-sm-10">{% render_field sellform.maxNumber class="form-control" %}</div>
+	  {% for error in sellform.maxNumber.errors %}
+	   <span class="help-block">{{ error }}</span>
+	  {% endfor %}
+	</div>
+	<input type="submit" class="btn btn-primary" name="sellofferbutton" value="Create Sell Order">
 </form>
 
 <p>

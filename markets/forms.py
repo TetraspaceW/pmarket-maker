@@ -11,6 +11,9 @@ class createMarketForm(forms.ModelForm):
 		labels = {
 			'desc': _('Description')
 		}
+		widgets = {
+			'name': forms.Textarea(attrs={'rows': 3})
+		}
 
 class createOptionForm(forms.ModelForm):
 	class Meta:

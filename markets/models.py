@@ -23,6 +23,16 @@ class Market(models.Model):
 			self.creationdate = timezone.now()
 		super().save(*args,**kwargs)
 
+	def numOptions(self):
+		return Option.objects.filter(market=self).count()
+
+	def numTraders(self):
+		return Portfolio.objects.filter(market=self).count()
+
+	def volume(self):
+		from django.db.models import Sum, F
+		return Transaction.objects.filter(option__market=self).aggregate(transferred=Sum(F('amount')*F('price'),output_field=models.FloatField()))['transferred']
+
 	def __str__(self):
 		return self.name
 
@@ -137,6 +147,9 @@ class Transaction(models.Model):
 		if not self.id:
 			self.creationdate = timezone.now()
 		super().save(*args,**kwargs)
+
+	def transferred(self):
+		return float(self.amount * self.price)
 
 class Portfolio(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)

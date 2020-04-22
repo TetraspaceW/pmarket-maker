@@ -9,7 +9,7 @@
 <h1>Editing {{option}}</h1>
 
 <p>
-Editing the name of the {{option.name}} option, part of the <a href="{% url 'markets:market-detail' option.market.id %}">{{option.market.name}}</a> market.
+Editing the name of the {{option.name}} option{% if option.question %} for the question {{option.question}}{% endif %}, part of the <a href="{% url 'markets:market-detail' option.market.id %}">{{option.market.name}}</a> market.
 </p>
 
 <form action="" method="post">

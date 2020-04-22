@@ -43,7 +43,7 @@ Your balance in this market is ¤{{portfolio.balance}}.
 		{% for option in question.list %}
 			<td>{{option.name}}</td>
 
-			<td>¤{{option.mostRecentPrice}}</td>
+			<td>{% if option.mostRecentPrice is not None %}¤{{option.mostRecentPrice}}{% endif %}</td>
 
 			{% if user.is_authenticated %} {% if option.closed %}
 			<td>CLOSED</td>

@@ -31,7 +31,10 @@ class Market(models.Model):
 
 	def volume(self):
 		from django.db.models import Sum, F
-		return Transaction.objects.filter(option__market=self).aggregate(transferred=Sum(F('amount')*F('price'),output_field=models.FloatField()))['transferred']
+		try:
+			return Transaction.objects.filter(option__market=self).aggregate(transferred=Sum(F('amount')*F('price'),output_field=models.FloatField()))['transferred']
+		except:
+			return 0
 
 	def __str__(self):
 		return self.name
@@ -146,7 +149,9 @@ class Transaction(models.Model):
 	def save(self,*args,**kwargs):
 		if not self.id:
 			self.creationdate = timezone.now()
-		super().save(*args,**kwargs)
+			
+		if self.seller != self.buyer:
+			super().save(*args,**kwargs)
 
 	def transferred(self):
 		return float(self.amount * self.price)

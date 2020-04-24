@@ -39,7 +39,6 @@ def executeSellOrder(sender,**kwargs):
 				sellOrder.save()
 			else:
 				sellOrder.delete()
-				transaction.save()
 				break;
 	
 

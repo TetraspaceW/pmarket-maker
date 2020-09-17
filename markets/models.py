@@ -24,7 +24,7 @@ class Market(models.Model):
 		super().save(*args,**kwargs)
 
 	def numOptions(self):
-		return Option.objects.filter(market=self).count()
+		return Option.objects.filter(market=self).filter(closed=False).count()
 
 	def numTraders(self):
 		return Portfolio.objects.filter(market=self).count()

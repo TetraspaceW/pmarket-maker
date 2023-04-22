@@ -9,5 +9,5 @@ psycopg2-binary==2.8.5
 python-http-client==3.2.7
 pytz==2019.3
 sendgrid==6.2.2
-sqlparse==0.3.1
+sqlparse==0.4.4
 whitenoise==5.0.1
